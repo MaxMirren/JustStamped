@@ -33,7 +33,8 @@ public class FirstMessageService extends AppCompatActivity {
         btnGoogleAuthorization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(this, SignInUpWithGoogle.class);
+                Intent intent = new Intent("com.maxm.just_stamped.authorization.SignInUpWithGoogle");
+                startActivity(intent);
             }
         });
     }
