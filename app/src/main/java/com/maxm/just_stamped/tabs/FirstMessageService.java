@@ -1,4 +1,4 @@
-package com.maxm.just_stamped.tabs.sign_in_up;
+package com.maxm.just_stamped.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
