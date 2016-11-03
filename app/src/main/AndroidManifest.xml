@@ -15,6 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name = "com.maxm.just_stamped.authorization.SignInUpWithGoogle"
+            android:label = "registration_google">
+        </activity>
     </application>
 
 </manifest>
