@@ -18,7 +18,7 @@ public class TabMostVisited extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.most_visited, container, false);
+        View v = inflater.inflate(R.layout.tab_most_visited, container, false);
         return v;
     }
 }

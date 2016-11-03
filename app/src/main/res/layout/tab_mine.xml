@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/first_message"
+    <include layout="@layout/message_first_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
@@ -54,7 +54,5 @@
         android:layout_marginBottom="15dp"
         android:layout_above="@+id/floating_action_button_add"
         android:layout_alignStart="@+id/floating_action_button_add" />
-
-
 
 </RelativeLayout>

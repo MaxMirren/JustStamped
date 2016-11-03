@@ -25,7 +25,7 @@ public class TabMine extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        currentView = inflater.inflate(R.layout.mine, container, false);
+        currentView = inflater.inflate(R.layout.tab_mine, container, false);
         setFloatingActionButtons();
         return currentView;
     }
