@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notes">ЗАМЕТКИ</string>
+    <string name="common">ОБЩИЕ</string>
+    <string name="mine">МОИ</string>
+    <string name="most_visited">ЧАСТО\nПОСЕЩАЕМЫЕ</string>
+</resources>

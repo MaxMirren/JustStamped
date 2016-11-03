@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="notes">NOTES</string>
+    <string name="common">COMMON</string>
+    <string name="mine">MINE</string>
+    <string name="most_visited">MOST\nVISITED</string>
+</resources>

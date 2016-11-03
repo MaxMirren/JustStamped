@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="title_1">Добро пожаловать в Just Stamped!</string>
+    <string name="content1">Для синхронизации и архивации данных приложения, выполните вход, либо создайте новый аккаунт</string>
+    <string name="content2">Предпочитаете хранить данные только на текущем устройстве?</string>
+    <string name="btn_acceptance">Да, продолжить</string>
+    <string name="content3">Если у вас уже есть заметки Just Stamped их можно импортировать</string>
+    <string name="btn_import">Импортировать</string>
+</resources>

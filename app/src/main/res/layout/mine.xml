@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/first_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_action_button_add_note"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:scaleType="center"
+        app:fabSize="normal"
+        android:src="@drawable/ic_add_note"
+        app:backgroundTint="@color/fab1_color"
+        app:pressedTranslationZ="12dp"
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@+id/floating_action_button_add_folder"
+        android:layout_alignStart="@+id/floating_action_button_add_folder" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_action_button_add"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="center"
+        app:fabSize="normal"
+        android:src="@drawable/ic_add"
+        app:pressedTranslationZ="12dp"
+        tools:ignore="RtlHardcoded"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="13dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_action_button_add_folder"
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:scaleType="center"
+        app:fabSize="normal"
+        android:src="@drawable/ic_add_folder"
+        app:backgroundTint="@color/fab2_color"
+        app:pressedTranslationZ="12dp"
+        android:visibility="invisible"
+        tools:ignore="RtlHardcoded"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/floating_action_button_add"
+        android:layout_alignStart="@+id/floating_action_button_add" />
+
+
+
+</RelativeLayout>

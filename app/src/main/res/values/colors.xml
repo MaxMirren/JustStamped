@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#a48227</color>
+    <color name="colorPrimaryDark">#a48227</color>
+    <color name="colorPrimaryDarkBack">#6b551a</color>
+    <color name="tabsScrollColor">#222222</color>
+    <color name="colorAccent">#d0581d</color>
+    <color name="fab1_color">#a48227</color>
+    <color name="fab2_color">#a48227</color>
+    <color name="almostBlack">#191919</color>
+    <color name="almostWhite">#ececec</color>
+</resources>

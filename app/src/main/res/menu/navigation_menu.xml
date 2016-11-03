@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/notifications"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:title="@string/notifications"
+        android:icon="@mipmap/ic_notifications_none_black_48dp"
+        android:textSize="20sp" />
+
+    <item android:id="@+id/settings"
+        android:title="@string/settings"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:icon="@mipmap/ic_settings_applications_black_48dp"
+        android:textSize="20sp" />
+
+    <item android:id="@+id/about"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp"
+        android:title="@string/about_app"
+        android:icon="@mipmap/ic_info_outline_black_48dp"
+        android:textSize="20sp" />
+
+</menu>
