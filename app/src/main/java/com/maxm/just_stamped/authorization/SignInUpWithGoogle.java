@@ -13,7 +13,7 @@ import com.maxm.just_stamped.js.R;
 public class SignInUpWithGoogle  extends AppCompatActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration_google);
     }

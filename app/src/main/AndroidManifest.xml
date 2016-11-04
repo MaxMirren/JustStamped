@@ -14,11 +14,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
         <activity
-            android:name = "com.maxm.just_stamped.authorization.SignInUpWithGoogle"
-            android:label = "com.maxm.just_stamped.authorization.SignInUpWithGoogle">
+            android:name="com.maxm.just_stamped.authorization.SignInUpWithGoogle">
         </activity>
+
     </application>
 
 </manifest>

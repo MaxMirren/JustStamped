@@ -1,5 +1,6 @@
 package com.maxm.just_stamped.js;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.maxm.just_stamped.authorization.SignInUpWithGoogle;
 import com.maxm.just_stamped.js.googleRes.SlidingTabLayout;
 import com.maxm.just_stamped.tabs.ViewPagerAdapter;
 
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void setToggle() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);                /* передача указателя mDrawerLayout на объект из activity_main */
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.to_open,
-                                            R.string.to_close);                        /* вызов конструктора для переключателя mToggle */
+                                            R.string.to_close);                                  /* вызов конструктора для переключателя mToggle */
         mDrawerLayout.addDrawerListener(mToggle);                                      /* добавление прослушивателя mToggle к mDrawerLayout */
         mToggle.syncState();
 
@@ -92,5 +96,12 @@ public class MainActivity extends AppCompatActivity {
         slidingTabLayout.setViewPager(viewPager);
     }
 
+    /*
+    Этот метод задает параметры слушателя кнопки для google_authorization c message_first_message.xml
+    */
+    public void signInUpWithGoogle (View vew) {
+        Intent intent = new Intent(this, SignInUpWithGoogle.class);
+        startActivity(intent);
+    }
 }
 
