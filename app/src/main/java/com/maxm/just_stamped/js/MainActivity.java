@@ -10,16 +10,21 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.widget.Button;
+import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.maxm.just_stamped.authorization.SignInUpWithGoogle;
 import com.maxm.just_stamped.js.googleRes.SlidingTabLayout;
 import com.maxm.just_stamped.tabs.ViewPagerAdapter;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     byte numberOfTabs = 3;
     CharSequence titles[] = new CharSequence[numberOfTabs];
     GoogleApiClient mGoogleApiClient;
+    public static String googleUserName;
+    SignInUpWithGoogle signInUpWithGoogle;
 
     /*
     Этот метод необходим, как точка входа в программу
@@ -41,13 +48,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        signInUpWithGoogle = new SignInUpWithGoogle();
+        setVariablesForGoogleAuth();
         setToolbar();
         setToggle();
         setTabs();
@@ -110,6 +112,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     /*
+        Этот метод выполняет определение переменных их инициализацию для входа через Google
+         */
+    private void setVariablesForGoogleAuth(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    /*
     Этот метод задает параметры слушателя кнопок
     */
     @Override
@@ -118,35 +133,58 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.google_authorization:
                 signIn();
                 break;
+            case R.id.sign_out:
+                signOut();
+                break;
             default:
                 break;
         }
     }
 
-    public void signIn () {
+    /*
+    Этот метод вызывает диалоговое окно выбора Аккаунтов Google и посылает код RC_SIGN_IN
+     */
+    private void signIn () {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /*
+    Этот метод выполняется при выходе из аккаунта Google
+     */
+    private void signOut () {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                signInUpWithGoogle.signOutViewsSetter();
+            }
+        });
+    }
+    /*
+    Этот метод выполняет обработку входа и в случае успеха аутентификации выполняет блок if()
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from
-        //   GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                // Get account information
-                String mFullName = acct.getDisplayName();
+                googleUserName = acct.getDisplayName();
                 String mEmail = acct.getEmail();
+                signInUpWithGoogle.successSignInViewsSetter();
                 Intent intent = new Intent(this, SignInUpWithGoogle.class);
                 startActivity(intent);
+            }
+            else {
+
             }
         }
     }
 
+    /*
+    Этот метод выполняет информирование он неудачном соединении
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
