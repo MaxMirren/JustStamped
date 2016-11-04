@@ -3,4 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/display_name"
+        android:textColor="@color/almostBlack"
+        android:textStyle="normal|bold"
+        android:textSize="20sp" />
+
+    <Button
+        android:text="Sign OUT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sign_out" />
 </LinearLayout>

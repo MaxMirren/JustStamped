@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     byte numberOfTabs = 3;
     CharSequence titles[] = new CharSequence[numberOfTabs];
     GoogleApiClient mGoogleApiClient;
-    //CharSequence titles[] = {"ОБЩИЕ", "МОИ", "ЧАСТО\nПОСЕЩАЕМЫЕ"};
-
 
     /*
     Этот метод необходим, как точка входа в программу
@@ -124,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 break;
         }
     }
-
 
     public void signIn () {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
