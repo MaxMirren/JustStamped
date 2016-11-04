@@ -75,7 +75,7 @@
             app:layout_constraintTop_toBottomOf="@+id/content1"
             app:layout_constraintLeft_toRightOf="@+id/js_authorization"
             android:layout_marginStart="40dp"
-            android:onClick="signInUpWithGoogle"/>
+            android:onClick="onClick"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floating_action_button_add_authorization"
