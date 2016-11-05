@@ -60,7 +60,7 @@
             app:srcCompat="@drawable/js_authorization"
             app:layout_constraintTop_toBottomOf="@+id/content1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintHorizontal_bias="0.0421"
             android:layout_marginStart="14dp" />
 
         <ImageButton
