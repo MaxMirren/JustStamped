@@ -7,4 +7,6 @@
     <string name="btn_acceptance">Yes, continue</string>
     <string name="content3">If you already have Just Stamped notes you may import it</string>
     <string name="btn_import">Import</string>
+    <string name="welcome_email">You signed in with </string>
+    <string name="welcome_name">Welcome, </string>
 </resources>

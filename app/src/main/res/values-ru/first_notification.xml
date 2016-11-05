@@ -7,4 +7,6 @@
     <string name="btn_acceptance">Да, продолжить</string>
     <string name="content3">Если у вас уже есть заметки Just Stamped их можно импортировать</string>
     <string name="btn_import">Импортировать</string>
+    <string name="welcome_email">Вы зашли под </string>
+    <string name="welcome_name">Добро пожаловать, </string>
 </resources>

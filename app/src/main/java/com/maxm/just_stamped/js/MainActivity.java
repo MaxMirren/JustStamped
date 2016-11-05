@@ -1,6 +1,8 @@
 package com.maxm.just_stamped.js;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -20,7 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.maxm.just_stamped.authorization.SignInUpWithGoogle;
+import com.maxm.just_stamped.authorization.BarHeader;
 import com.maxm.just_stamped.js.googleRes.SlidingTabLayout;
 import com.maxm.just_stamped.tabs.ViewPagerAdapter;
 
@@ -35,12 +39,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
     SlidingTabLayout slidingTabLayout;
-    byte numberOfTabs = 3;
+    static byte numberOfTabs = 3;
     CharSequence titles[] = new CharSequence[numberOfTabs];
     GoogleApiClient mGoogleApiClient;
-    public static String googleUserName;
-    SignInUpWithGoogle signInUpWithGoogle;
-
+    //Имя и почта текущего пользователя Google
+    static String  userName, userEmail;
     /*
     Этот метод необходим, как точка входа в программу
      */
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        signInUpWithGoogle = new SignInUpWithGoogle();
         setVariablesForGoogleAuth();
         setToolbar();
         setToggle();
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             case R.id.google_authorization:
                 signIn();
                 break;
-            case R.id.sign_out:
+            case R.id.btn_sign_out:
                 signOut();
                 break;
             default:
@@ -149,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+
     /*
     Этот метод выполняется при выходе из аккаунта Google
      */
@@ -156,10 +159,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
-                signInUpWithGoogle.signOutViewsSetter();
+
             }
         });
     }
+
     /*
     Этот метод выполняет обработку входа и в случае успеха аутентификации выполняет блок if()
      */
@@ -170,11 +174,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                googleUserName = acct.getDisplayName();
-                String mEmail = acct.getEmail();
-                signInUpWithGoogle.successSignInViewsSetter();
-                Intent intent = new Intent(this, SignInUpWithGoogle.class);
-                startActivity(intent);
+                userEmail = acct.getEmail();
+                userName = acct.getDisplayName();
+                String finalMessage = getResources().getString(R.string.welcome_email) + " " +  userEmail + "\n"
+                                    + getResources().getString(R.string.welcome_name) + " " + userName;
+                refreshUserdata();
+                Toast.makeText(this, finalMessage , Toast.LENGTH_LONG).show();
             }
             else {
 
@@ -188,6 +193,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    /*
+    Этот метод обновляет данные о пользователе
+     */
+    private void refreshUserdata() {
+        TextView barName = (TextView) findViewById(R.id.bar_name);
+        TextView barEmail = (TextView) findViewById(R.id.bar_email);
+        barName.setText(userName);
+        barEmail.setText(userEmail);
     }
 }
 
