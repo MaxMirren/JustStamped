@@ -17,10 +17,6 @@
 
         </activity>
 
-        <activity
-            android:name="com.maxm.just_stamped.authorization.BarHeader">
-        </activity>
-
     </application>
 
 </manifest>

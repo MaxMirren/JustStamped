@@ -1,8 +1,6 @@
 package com.maxm.just_stamped.js;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +21,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.maxm.just_stamped.authorization.BarHeader;
 import com.maxm.just_stamped.js.googleRes.SlidingTabLayout;
 import com.maxm.just_stamped.tabs.ViewPagerAdapter;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
@@ -44,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     GoogleApiClient mGoogleApiClient;
     //Имя и почта текущего пользователя Google
     static String  userName, userEmail;
+
+
     /*
     Этот метод необходим, как точка входа в программу
      */
@@ -118,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
          */
     private void setVariablesForGoogleAuth(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("504359195684-rb0iu9qf8v1a5bfkd1hblpreks85tgb6.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -131,16 +128,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     */
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.google_authorization:
+        //switch(v.getId()){
+         //   case R.id.google_authorization:
                 signIn();
-                break;
-            case R.id.btn_sign_out:
-                signOut();
-                break;
-            default:
-                break;
-        }
+           //     break;
+           // case R.id.btn_sign_out:
+            //    signOut();
+             //   break;
+            //default:
+             //   break;
+     //   }
+    }
+
+    public void onClickSignOut(View v) {
+        signOut();
+        refreshUserData(false);
     }
 
     /*
@@ -151,22 +153,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-
     /*
-    Этот метод выполняется при выходе из аккаунта Google
-     */
-    private void signOut () {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-
-            }
-        });
-    }
-
-    /*
-    Этот метод выполняет обработку входа и в случае успеха аутентификации выполняет блок if()
-     */
+   Этот метод выполняет обработку входа и в случае успеха аутентификации выполняет блок if()
+    */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -177,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 userEmail = acct.getEmail();
                 userName = acct.getDisplayName();
                 String finalMessage = getResources().getString(R.string.welcome_email) + " " +  userEmail + "\n"
-                                    + getResources().getString(R.string.welcome_name) + " " + userName;
-                refreshUserdata();
+                        + getResources().getString(R.string.welcome_name) + " " + userName;
+                refreshUserData(true);
                 Toast.makeText(this, finalMessage , Toast.LENGTH_LONG).show();
             }
             else {
@@ -188,21 +177,41 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     /*
+    Этот метод выполняется при выходе из аккаунта Google
+     */
+    private void signOut () {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                Toast.makeText(MainActivity.this, "You are signed out" , Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    /*
     Этот метод выполняет информирование он неудачном соединении
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Toast.makeText(MainActivity.this, connectionResult.toString() , Toast.LENGTH_LONG).show();
     }
 
     /*
-    Этот метод обновляет данные о пользователе
+    Этот метод выполняет обновление данных у шапки боковой панели
      */
-    private void refreshUserdata() {
+    private void refreshUserData(boolean logIn) {
         TextView barName = (TextView) findViewById(R.id.bar_name);
         TextView barEmail = (TextView) findViewById(R.id.bar_email);
-        barName.setText(userName);
-        barEmail.setText(userEmail);
+        if (logIn) {
+            barName.setText(userName);
+            barEmail.setText(userEmail);
+        }
+        else
+        {
+            barName.setText(getResources().getString(R.string.no_user));
+            barEmail.setText(getResources().getString(R.string.no_user));
+        }
     }
 }
 
