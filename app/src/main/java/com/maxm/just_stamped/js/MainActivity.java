@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     /*
-    Этот метод задает параметры слушателя кнопок
+    Этот метод задает параметры слушателя кнопок для входа и выхода из аккаунта
     */
     @Override
     public void onClick(View v) {
