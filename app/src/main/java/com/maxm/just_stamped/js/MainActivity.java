@@ -1,6 +1,9 @@
 package com.maxm.just_stamped.js;
 
+import android.animation.LayoutTransition;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -10,6 +13,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +27,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
 import com.maxm.just_stamped.js.googleRes.SlidingTabLayout;
 import com.maxm.just_stamped.tabs.ViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
-    private DrawerLayout mDrawerLayout;                                              //позволяет воздействовать на DrawerLayout
     private ActionBarDrawerToggle mToggle;                                           //позволяет воздействовать на переключатель на DrawerLayout
-    private Toolbar mToolbar;                                                        //позволяет воздействовать на верхнюю панель
     private static final int RC_SIGN_IN = 9001;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
@@ -36,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     static byte numberOfTabs = 3;
     CharSequence titles[] = new CharSequence[numberOfTabs];
     GoogleApiClient mGoogleApiClient;
+    FirebaseAuth firebaseAuth;
     //Имя и почта текущего пользователя Google
     static String  userName, userEmail;
-
 
     /*
     Этот метод необходим, как точка входа в программу
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     Этот метод выполняет действия по установке переключателя для вызова боковой панели
      */
     protected void setToggle() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);                /* передача указателя mDrawerLayout на объект из activity_main */
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);   /* передача указателя mDrawerLayout на объект из activity_main */
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.to_open,
                                             R.string.to_close);                                  /* вызов конструктора для переключателя mToggle */
         mDrawerLayout.addDrawerListener(mToggle);                                      /* добавление прослушивателя mToggle к mDrawerLayout */
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     Этот метод выполняет обработку нажатий на элементы бокового меню
      */
     protected void setToolbar () {
-        mToolbar = (Toolbar) findViewById(R.id.action_bar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.action_bar);
         setSupportActionBar(mToolbar);
     }
 
@@ -121,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-    }
+        firebaseAuth = FirebaseAuth.getInstance();
+        }
 
     /*
     Этот метод задает параметры слушателя кнопок для входа и выхода из аккаунта
@@ -132,9 +138,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
          //   case R.id.google_authorization:
                 signIn();
            //     break;
-           // case R.id.btn_sign_out:
-            //    signOut();
-             //   break;
             //default:
              //   break;
      //   }
@@ -165,9 +168,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 GoogleSignInAccount acct = result.getSignInAccount();
                 userEmail = acct.getEmail();
                 userName = acct.getDisplayName();
-                String finalMessage = getResources().getString(R.string.welcome_email) + " " +  userEmail + "\n"
+                                String finalMessage = getResources().getString(R.string.welcome_email) + " " +  userEmail + "\n"
                         + getResources().getString(R.string.welcome_name) + " " + userName;
-                refreshUserData(true);
+                refreshUserData(true, acct.getPhotoUrl());
+                firebaseAuth.createUserWithEmailAndPassword(userEmail, userName);
+                collapseExpandConstraintLayoutOnMessage(true);
                 Toast.makeText(this, finalMessage , Toast.LENGTH_LONG).show();
             }
             else {
@@ -183,11 +188,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
+                firebaseAuth.signOut();
                 Toast.makeText(MainActivity.this, "You are signed out" , Toast.LENGTH_LONG).show();
             }
         });
     }
-
 
     /*
     Этот метод выполняет информирование он неудачном соединении
@@ -211,6 +216,40 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         {
             barName.setText(getResources().getString(R.string.no_user));
             barEmail.setText(getResources().getString(R.string.no_user));
+        }
+    }
+
+    private void refreshUserData(boolean logIn, Uri uri) {
+        TextView barName = (TextView) findViewById(R.id.bar_name);
+        TextView barEmail = (TextView) findViewById(R.id.bar_email);
+        ImageView avatar = (ImageView) findViewById(R.id.user_icon);
+        if (logIn) {
+            barName.setText(userName);
+            barEmail.setText(userEmail);
+            //URL newurl = new URL(photo_url_str);
+            //Uri.decode(uri);
+        }
+        else
+        {
+            barName.setText(getResources().getString(R.string.no_user));
+            barEmail.setText(getResources().getString(R.string.no_user));
+        }
+    }
+
+    /*
+    Этот метод выполняет сворачивание и разворачивание сообщения о регистрации TabToolbar
+     */
+    public void collapseExpandConstraintLayoutOnMessage(Boolean expanded) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.message_action_bar);
+        Animation animation;
+        if (expanded) {
+            animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.message_collapse);
+            toolbar.startAnimation(animation);
+        }
+        else
+        {
+            animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.message_expand);
+            toolbar.startAnimation(animation);
         }
     }
 }

@@ -2,4 +2,8 @@
 <resources>
     <string name="sign_out">Выйти</string>
     <string name="no_user">Вход не выполнен</string>
+    <string name="notifications">Уведомления</string>
+    <string name="settings">Настройки</string>
+    <string name="about_app">О приложении</string>
+
 </resources>

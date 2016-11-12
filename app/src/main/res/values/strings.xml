@@ -3,8 +3,4 @@
     <string name="application_full_name">Just Stamped</string>
     <string name="to_open">Open</string>
     <string name="to_close">Close</string>
-    <string name="notifications">Уведомления</string>
-    <string name="settings">Настройки</string>
-    <string name="about_app">О программе</string>
-
 </resources>
