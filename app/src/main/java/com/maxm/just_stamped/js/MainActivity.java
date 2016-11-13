@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -30,6 +31,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.maxm.just_stamped.js.googleRes.SlidingTabLayout;
 import com.maxm.just_stamped.tabs.ViewPagerAdapter;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -115,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     /*
-        Этот метод выполняет определение переменных их инициализацию для входа через Google
-         */
+    Этот метод выполняет определение переменных их инициализацию для входа через Google
+    */
     private void setVariablesForGoogleAuth(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("504359195684-rb0iu9qf8v1a5bfkd1hblpreks85tgb6.apps.googleusercontent.com")
@@ -226,13 +228,30 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (logIn) {
             barName.setText(userName);
             barEmail.setText(userEmail);
-            //URL newurl = new URL(photo_url_str);
-            //Uri.decode(uri);
+            Picasso.with(this).load(uri).into(avatar);
         }
         else
         {
+
+            avatar.setBackgroundResource(0);
+            avatar.setImageResource(0);
+            avatar.onCreateDrawableState(0);
+
+            avatar.setImageDrawable(null);
+
+            avatar.setImageURI(null);
+            avatar.setImageDrawable(null);
+            avatar.invalidate();
+            onResume();
+            //avatar.setImageURI(Uri.fromFile(getFileStreamPath()));
+            avatar.setImageResource(R.mipmap.ic_account_circle_black_48dp);
+            avatar.setBackgroundResource(R.mipmap.ic_account_circle_black_48dp);
+            avatar.setImageDrawable(getResources().getDrawable(R.mipmap.ic_account_circle_black_48dp));
+            avatar.setImageDrawable(ContextCompat.getDrawable(this, R.mipmap.ic_account_circle_black_48dp));
             barName.setText(getResources().getString(R.string.no_user));
             barEmail.setText(getResources().getString(R.string.no_user));
+
+            //Picasso.with(this).load(R.mipmap.ic_account_circle_black_48dp).into(avatar);
         }
     }
 
