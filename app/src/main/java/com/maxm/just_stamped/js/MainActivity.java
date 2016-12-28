@@ -60,6 +60,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setTabs();
     }
 
+    /*
+    Этот метод необходим для отображения сохраненного ранее состояния, привязанного activity
+     */
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
    /*
     Этот метод выполняет действия по установке переключателя для вызова боковой панели
      */
